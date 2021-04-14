@@ -1,0 +1,30 @@
+@import 'Vars';
+
+.ColeccionesPage{
+
+    .Title{
+        margin-left: 1rem;
+    }
+
+    .CItem{
+        padding: 1.5rem 1rem;
+        margin: 1rem;
+        background-color: $MainBackgroundColor;
+        border-radius: 4px;
+        color: #fff;
+        position: relative;
+        cursor: pointer;
+
+        .Desc{
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .Icon{
+            display: inline-block;
+            position: absolute;
+            right: 10px;
+            vertical-align: middle;
+        }
+    }
+}

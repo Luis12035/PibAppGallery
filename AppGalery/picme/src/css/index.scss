@@ -3,21 +3,20 @@ html{
     padding: 0px;
     height: 100%;
     width: 100%;
-    font-size: 17px;
+    font-size: 16px;
     font-family: sans-serif;
 
     body{
         margin: 0px;
         padding: 0px;
-        height: 0px;
-        width: 0px;
-    
+        height: 100%;
+        width: 100%;
+
         #root{
-             margin: 0px;
-             padding: 0px;
-             height: 0px;
-            width: 0px;
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+            width: 100%;
         }
     }
 }
-
