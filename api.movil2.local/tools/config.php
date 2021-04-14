@@ -1,6 +1,6 @@
 <?php
 
-    include("../../")
+    include("../../tools/cors.php");
 
     $config = json_decode('
         {
