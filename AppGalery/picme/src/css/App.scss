@@ -1,0 +1,45 @@
+.App{
+    height: 100%;
+
+    .LogoContainer{
+        text-align: center;
+        padding: 2rem;
+    
+        .Logo{
+            display: inline-block;
+            height: 6rem;
+            width: 10rem;
+        }
+    }
+
+    .FormContainer{
+        text-align: center;
+
+        .LoginForm{
+            display: inline-block;
+
+            .FieldContainer{
+                padding: 0.6rem;
+
+                input{
+                    padding: 0.7rem;
+                    width: calc(100% - 1.9rem);
+                }
+
+                .Button{
+                    background-color: indigo;
+                    color: white;
+                    padding: 1rem;
+                    border-radius: 8px;
+                }
+            }
+
+            .ErrorMessage{
+                color: red;
+                font-size: 0.7rem;
+                font-weight: bold;
+            }
+        }
+    }
+    
+}
