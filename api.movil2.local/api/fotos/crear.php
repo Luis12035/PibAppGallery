@@ -20,28 +20,23 @@
 
         die();
     }
-
+    
+    // Almacenamos la Foto.
     $UsrUsr     = $_SESSION["UsrUsr"];
     $ColCod     = (isset($_POST["ColCod"]))?$_POST["ColCod"]:"";
-   
     $store_dir  = "../../data/$UsrUsr/$ColCod/";
     @mkdir($store_dir, 0777, true);
-
-    // Almacenar la fotografia
+    
     $FotFile    = $_FILES["FotFile"];
-
-    $filename   = $FotFile["name"]
     $tmp_path   = $FotFile["tmp_name"];
-    $path       = "../../data/".$filename;
+    $path       = $store_dir.$FotFile["name"];
+    $public_path = "/$UsrUsr/$ColCod/".$FotFile["name"];
 
-    if(move_uploaded_file($tmp_path, $path))
-    {
-        // Limpiamos parametros
-        
-        
+    if(move_uploaded_file($tmp_path, $path)){
+        // Limpiamos parametros        
         $FotCod     = uniqid();
-        $FotFch     = date("Y-m-d", time());
-        $FotPath    = "";
+        $FotFch     = date("Y-m-d H:i:s", time());
+        $FotPath    = $public_path;
     
         $UsrUsr     = mysqli_real_escape_string($mydb, $UsrUsr);
         $ColCod     = mysqli_real_escape_string($mydb, $ColCod);
@@ -60,7 +55,7 @@
                 "status"=>"ER",
                 "payload"=>array(
                     "error"=> $mydb->error,
-                    "message"=>"Ocurrio un error creando la colección."
+                    "message"=>"Ocurrio un error creando la foto."
                 )
             ));
         }else{
@@ -71,19 +66,12 @@
                 )
             ));
         }
-
     }else{
         echo json_encode(array(
             "status"=>"ER",
             "payload"=>array(
-                "message"=>"Ocurrio un error al enviar el archivo"
+                "message"=>"Ocurrio un error almacenando la foto."
             )
-        ))
-    }
-    
-    
-    
-
-
-    
+        ));
+    }  
 ?>
