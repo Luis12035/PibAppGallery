@@ -12,7 +12,8 @@ class ColeccionPage extends React.Component{
 
         this.state = {
             col_fotos: "",
-            col_name: ""
+            col_name: "",
+            showLoading: "none"
         }
     }
 
@@ -20,50 +21,99 @@ class ColeccionPage extends React.Component{
         this.loadData(this.state.ColCod);
     }
 
+    onAddFotoClick = e =>{
+        document.getElementById("file").click();
+    }
+
+    onFotoSelected = e =>{
+        var imageFile = document.getElementById("file");
+        let fsize = imageFile.files[0].size;
+
+        if(fsize <= 19000000){
+            var formData = new FormData();
+            formData.append("ColCod", this.props.ColCod);
+            formData.append("FotFile", imageFile.files[0]);
+            var _this = this;
+
+            this.setState({showLoading: "block"});
+
+            axios.post("https://api.movil2.cointla.com/api/fotos/crear.php", formData, {
+                headers:{
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(res=>{
+                _this.loadData(_this.props.ColCod);
+                this.setState({showLoading: "none"});
+            })
+        }else{
+            alert("La fotografia en muy pesada (2MB Maximo)")
+        }
+    }
+
     render(){
         return(
             <div className="ColeccionPage">
-                <TopBar />
-                <h2 className="Tittle">{this.state.col_name}</h2>
-                {this.state.col_fotos}
+                <TopBar backTo="#/colecciones" deleteCol={this.props.ColCod} />
+                <h2 className="Title">{this.state.col_name}</h2>
+                <div className="LoadingAxios" style={{display: this.state.showLoading}}>
+                    <div class="lds-ripple"><div></div><div></div></div>
+					<div class="LoadingText">Cargando...</div>
+                </div>
+                <input type="file" onChange={this.onFotoSelected} name="file" id="file" style={{display: "none"}} />
+				<div className="AddFotoButton" onClick={this.onAddFotoClick}><i className="material-icons">add_a_photo</i></div>
+				<div className="FotosContainer">
+					{this.state.col_fotos}
+				</div>
             </div>
         );
     }
 
     loadData = ColCod =>{
-        // Realizo consulta al servidor...
-        axios.defaults.withCredentials = true;
-        axios.post("https://api.movil2.cointla.com/api/colecciones/obtener.php", {
+		// Realizo consulta al servidor...
+		var _this = this;
+		axios.defaults.withCredentials = true;
+		axios.post("https://api.movil2.cointla.com/api/colecciones/obtener.php", {
             ColCod: ColCod
         }).then(res => {
-            let jres = res.data;
+			let jres = res.data;
 
-            if(jres.status === "OK"){
-                let col_fotos = [];
+			if(jres.status === "OK"){
+				let col_fotos = [];
                 let col_name = jres.payload.ColDsc;
-
-                //Interamos todas las fotos para armas los divs
-                for(const key in jres.payload.fotos) {
-                    if(Object.hasOwnProperty.call(jres.payload.fotos, key)) {
-                        const foto = jres.payload.fotos[key];
+				
+				// Iteramos todas las fotos para armar los divs
+				for (const key in jres.payload.fotos) {
+					if (Object.hasOwnProperty.call(jres.payload.fotos, key)) {
+						const foto = jres.payload.fotos[key];
                         let foto_url = "https://api.movil2.cointla.com/data"+foto.FotPath;
-                        col_fotos.push(
-                            <div className="FItem" key={foto.FotCod} id={foto.FotCod} style={{background: "url("+foto.url+")"}}></div>
-                        );
-                    }
-                }
 
-                //Actualizar el state del componente para mostrar la coleccion y fotos
-                this.setState({
-                    col_fotos: col_fotos,
+						let onDeleteClick = e =>{
+							axios.post("https://api.movil2.cointla.com/api/fotos/eliminar.php", {
+								ColCod: ColCod,
+								FotCod: foto.FotCod
+							}).then(res => {
+								_this.loadData(_this.props.ColCod);
+							});
+						}
+
+						col_fotos.push(
+							<div className="FItem" key={foto.FotCod} id={foto.FotCod} style={{backgroundImage: "url("+foto_url+")"}}>
+								<div className="inFotoIcon" onClick={onDeleteClick}><i className="material-icons">delete</i></div>
+							</div>
+						);
+					}
+				}
+
+				// Actualizar el State del Componente para mostrar la coleccion y fotos
+				this.setState({
+					col_fotos: col_fotos,
                     col_name: col_name
-                });
-
-            }else{
-                this.setState({errorMessage: jres.payload.message});
-            }
-        });
-    }
+				});
+			}else{
+				this.setState({errorMessage: jres.payload.message});
+			}
+		});
+	}
 
 }
 
