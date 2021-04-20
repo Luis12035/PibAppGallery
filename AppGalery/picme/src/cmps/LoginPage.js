@@ -36,6 +36,10 @@ class LoginPage extends React.Component{
 		});
 	}
 
+	onRegistroClick = e =>{
+		window.location = "#/registro";
+	}
+
 	render(){
 		return (
 			<div className="LoginPage">
@@ -54,6 +58,9 @@ class LoginPage extends React.Component{
 						<div className="ErrorMessage">{this.state.errorMessage}</div>
 						<div className="FieldContainer">
 							<div onClick={this.onLoginClick} className="Button">Acceder</div>
+						</div>
+						<div className="FieldContainer">
+							<div onClick={this.onRegistroClick} className="Button">Registrarse</div>
 						</div>
 					</div>
 				</div>
