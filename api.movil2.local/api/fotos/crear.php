@@ -35,7 +35,7 @@
     if(move_uploaded_file($tmp_path, $path)){
         // Limpiamos parametros        
         $FotCod     = uniqid();
-        $FotFch     = date("Y-m-d H:i:s", time());
+        $FotFch     = date("Y-m-d H:m:s", time());
         $FotPath    = $public_path;
     
         $UsrUsr     = mysqli_real_escape_string($mydb, $UsrUsr);
