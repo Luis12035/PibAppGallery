@@ -6,69 +6,70 @@ import {useParams} from 'react-router-dom';
 import '../css/ColeccionPage.scss';
 
 class ColeccionPage extends React.Component{
-    
-    constructor(){
-        super();
 
-        this.state = {
-            col_fotos: "",
+	constructor(){
+		super();
+
+		this.state = {
+			col_fotos: "",
             col_name: "",
-            showLoading: "none"
-        }
-    }
+			showLoading: "none"
+		}
+	}
+	
+	componentDidMount(){
+		this.loadData(this.props.ColCod);
+	}
 
-    componentDidMount(){
-        this.loadData(this.state.ColCod);
-    }
+	onAddFotoClick = e =>{
+		document.getElementById("file").click();
+	}
 
-    onAddFotoClick = e =>{
-        document.getElementById("file").click();
-    }
+	onFotoSelected = e =>{
+		var imageFile = document.getElementById("file");
+		let fsize = imageFile.files[0].size;
 
-    onFotoSelected = e =>{
-        var imageFile = document.getElementById("file");
-        let fsize = imageFile.files[0].size;
+		if(fsize <= 19000000){
+			var formData = new FormData();
+			formData.append("ColCod", this.props.ColCod);
+			formData.append("FotFile", imageFile.files[0]);
+			var _this = this;
 
-        if(fsize <= 19000000){
-            var formData = new FormData();
-            formData.append("ColCod", this.props.ColCod);
-            formData.append("FotFile", imageFile.files[0]);
-            var _this = this;
+			this.setState({showLoading: "block"});
 
-            this.setState({showLoading: "block"});
+			axios.post("https://api.movil2.cointla.com/api/fotos/crear.php", formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+			}).then(res=>{
+				_this.loadData(_this.props.ColCod);
+				this.setState({showLoading: "none"});
+			});
 
-            axios.post("https://api.movil2.cointla.com/api/fotos/crear.php", formData, {
-                headers:{
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(res=>{
-                _this.loadData(_this.props.ColCod);
-                this.setState({showLoading: "none"});
-            })
-        }else{
-            alert("La fotografia en muy pesada (2MB Maximo)")
-        }
-    }
+		}else{
+			alert("La fotografia es un pesada (2MB Máximo)");
+		}
+	}
 
-    render(){
-        return(
-            <div className="ColeccionPage">
-                <TopBar backTo="#/colecciones" deleteCol={this.props.ColCod} />
-                <h2 className="Title">{this.state.col_name}</h2>
-                <div className="LoadingAxios" style={{display: this.state.showLoading}}>
-                    <div class="lds-ripple"><div></div><div></div></div>
+	render(){
+		return (
+			<div className="ColeccionPage">
+				<TopBar backTo="#/colecciones" deleteCol={this.props.ColCod} />
+				<h2 className="Title">{this.state.col_name}</h2>
+				<div className="LoadingAxios" style={{display: this.state.showLoading}}>
+					<div class="lds-ripple"><div></div><div></div></div>
 					<div class="LoadingText">Cargando...</div>
-                </div>
-                <input type="file" onChange={this.onFotoSelected} name="file" id="file" style={{display: "none"}} />
+				</div>
+				<input type="file" onChange={this.onFotoSelected} name="file" id="file" style={{display: "none"}} />
 				<div className="AddFotoButton" onClick={this.onAddFotoClick}><i className="material-icons">add_a_photo</i></div>
 				<div className="FotosContainer">
 					{this.state.col_fotos}
 				</div>
-            </div>
-        );
-    }
+			</div>
+		);
+	}
 
-    loadData = ColCod =>{
+	loadData = ColCod =>{
 		// Realizo consulta al servidor...
 		var _this = this;
 		axios.defaults.withCredentials = true;
@@ -115,11 +116,13 @@ class ColeccionPage extends React.Component{
 		});
 	}
 
+
 }
+
 
 let _ColeccionPage = function(){
     let {ColCod} = useParams();
-    return(<ColeccionPage ColCod={ColCod}></ColeccionPage>)
+    return (<ColeccionPage ColCod={ColCod}></ColeccionPage>)
 }
 
 export default _ColeccionPage;
