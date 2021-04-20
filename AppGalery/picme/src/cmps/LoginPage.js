@@ -41,7 +41,7 @@ class LoginPage extends React.Component{
 			<div className="LoginPage">
 				<TopBar />
 				<div className="LogoContainer">
-					<div className="Logo"></div>
+					<image className="Logo"></image>
 				</div>
 				<div className="FormContainer">
 					<div className="LoginForm">
