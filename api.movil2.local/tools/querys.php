@@ -16,7 +16,7 @@
         ),
         "fotos" => array(
             "1_insertar" => "INSERT INTO fotos  VALUES(?, ?, ?, ?, ?);",
-            "2_obtener" => "SELECT * FROM fotos WHERE UsrUsr = ? AND ;",
+            "2_obtener" => "SELECT * FROM fotos WHERE UsrUsr = ? AND ColCod = ? AND FotCod = ?;",
             "3_eliminar" => "DELETE FROM fotos WHERE UsrUsr = ? AND ColCod = ? AND FotCod = ?;"
             // "3_actualizar" => "UPDATE usuarios SET UsrNom = ?, UsrTel = ? WHERE UsrUsr = ?;"
         ),
