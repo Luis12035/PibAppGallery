@@ -31,8 +31,9 @@ class RegistroPage extends React.Component{
         let UsrTel = this.state.UsrTel;
         let UsrEst = this.state.UsrEst;
 
-        axios.defaults.withCredentials = true;
-        axios.post("https://api.movil2.cointla.com/api/usuarios/crear.php", {
+        if (UsrUsr !== "" && UsrNom !== "" && UsrPwd !== "" && UsrMail !== "" && UsrTel !== "") {
+            axios.defaults.withCredentials = true;
+            axios.post("https://api.movil2.cointla.com/api/usuarios/crear.php", {
 			UsrUsr : UsrUsr,
             UsrNom : UsrNom,
             UsrPwd : UsrPwd,
@@ -40,21 +41,26 @@ class RegistroPage extends React.Component{
             UsrTel : UsrTel,
             UsrEst : UsrEst
 
-		}).then(res => {
-			let jres = res.data;
+		    }).then(res => {
+                let jres = res.data;
 
-			if(jres.status === "OK"){
-                this.setState({errorMessage: jres.payload.message});
-				this.setState({
-                    showOkPage: "block"
-                })
-			}else{
-				this.setState({errorMessage: jres.payload.message});
-                this.setState({
-                    showOkPage: "none"
-                })
-			}
-		});
+                if(jres.status === "OK"){
+                    this.setState({errorMessage: jres.payload.message});
+                    this.setState({
+                        showOkPage: "block"
+                    })
+                }else{
+                    this.setState({errorMessage: jres.payload.message});
+                    this.setState({
+                        showOkPage: "none"
+                    })
+                }
+		    });
+        }else{
+            this.setState({errorMessage: "Valores invalidos"});
+        }
+
+        
     }
 
     onLoginBack = e =>{
@@ -64,7 +70,7 @@ class RegistroPage extends React.Component{
     render(){
         return (
             <div className="RegistroPage">
-                <TopBar backTo="/"></TopBar>
+                <TopBar></TopBar>
 
                 <div className="OkPage" style={{display: this.state.showOkPage}}>
 					<div className="Container">
