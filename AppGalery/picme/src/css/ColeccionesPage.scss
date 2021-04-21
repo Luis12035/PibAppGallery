@@ -70,9 +70,10 @@
         margin: 1rem;
         background-color: $MainBackgroundColor;
         border-radius: 4px;
-        color: #fff;
+        color: rgb(0, 0, 0);
         position: relative;
         cursor: pointer;
+        font-weight: bold;
 
         .Desc{
             display: inline-block;

@@ -30,9 +30,14 @@
                 }
     
                 .Button{
-                    background-color: rgb(0, 81, 156);
-                    color: #FFF;
+                    background-color: rgb(11, 165, 126);
+                    color: rgb(0, 0, 0);
                     padding: 1rem;
+                    font-weight: bold;
+                }
+
+                .Button:hover{
+                    background-color: rgb(11, 60, 165);
                 }
             }
 
