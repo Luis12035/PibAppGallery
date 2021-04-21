@@ -9,9 +9,9 @@ class LoginPage extends React.Component{
 		super();
 
 		this.state = {
-			"UsrUsr": "",
-			"UsrPwd": "",
-			"errorMessage": ""
+			UsrUsr: "",
+			UsrPwd: "",
+			errorMessage: ""
 		}
 	}
 
@@ -20,31 +20,37 @@ class LoginPage extends React.Component{
 		let UsrUsr = this.state.UsrUsr;
 		let UsrPwd = this.state.UsrPwd;
 
-		axios.defaults.withCredentials = true;
-		axios.post("https://api.movil2.cointla.com/api/usuarios/login.php", {
+		if (UsrUsr !== "" && UsrPwd !== ""){
+			axios.defaults.withCredentials = true;
+			axios.post("https://api.movil2.cointla.com/api/usuarios/login.php", {
 			UsrUsr: UsrUsr,
 			UsrPwd: UsrPwd
-		}).then(res => {
-			let jres = res.data;
+			}).then(res => {
+				let jres = res.data;
 
-			if(jres.status === "OK"){
-				window.location = "#/colecciones";
-				window.localStorage.setItem("logued","OK");
-			}else{
-				this.setState({errorMessage: jres.payload.message});
-			}
-		});
+				if(jres.status === "OK"){
+					window.location = "#/colecciones";
+					window.localStorage.setItem("logued","OK");
+				}else{
+					this.setState({errorMessage: jres.payload.message});
+				}
+			});
+		}else{
+			this.setState({errorMessage: "Valores invalidos"});
+		}
+
+		
 	}
 
 	onRegistroClick = e =>{
-		window.location = "#/registro";
+		window.location = "#/registro/";
 		window.localStorage.setItem("logued","OK");
 	}
 
 	render(){
 		return (
 			<div className="LoginPage">
-				<TopBar />
+				<TopBar/>
 				<div className="LogoContainer">
 					<image className="Logo"></image>
 				</div>
