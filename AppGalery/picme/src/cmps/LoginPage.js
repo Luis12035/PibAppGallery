@@ -38,6 +38,7 @@ class LoginPage extends React.Component{
 
 	onRegistroClick = e =>{
 		window.location = "#/registro";
+		window.localStorage.setItem("logued","OK");
 	}
 
 	render(){
