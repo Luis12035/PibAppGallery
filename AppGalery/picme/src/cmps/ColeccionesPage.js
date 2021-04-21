@@ -53,7 +53,7 @@ class ColeccionesPage extends React.Component{
 	render(){
 		return (
 			<div className="ColeccionesPage">
-				<TopBar />
+				<TopBar/>
 				<div className="AddColPage" style={{display: this.state.showAddPage}}>
 					<div className="Container">
 						<h3>Ingrese Nombre</h3>
